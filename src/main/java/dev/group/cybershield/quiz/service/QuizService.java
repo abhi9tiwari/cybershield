@@ -12,7 +12,7 @@ public class QuizService {
     @Autowired
     Questions queEnt;
 
-    public List<TestDTO> getTestData(){
+    public Map<Integer,TestDTO> getTestData(){
         Map<Integer,TestDTO> questions = new HashMap<Integer,TestDTO>();
         Random random = new Random();
         int Rnum;
@@ -24,6 +24,6 @@ public class QuizService {
             }
         }
         List<TestDTO> testData = new ArrayList<TestDTO>();
-        return testData;
+        return questions;
     }
 }
