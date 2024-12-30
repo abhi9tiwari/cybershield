@@ -1,10 +1,12 @@
 package dev.group.cybershield.quiz.model;
 
+import dev.group.cybershield.entity.Answers;
+import dev.group.cybershield.entity.Questions;
 import lombok.Data;
 import java.util.*;
 
 @Data
 public class TestDTO {
-    public QuestionDTO question;
-    public List<AnswerDTO> answer;
+    public Questions question;
+    public List<Answers> answersList;
 }
