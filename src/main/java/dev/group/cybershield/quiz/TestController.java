@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,13 +22,10 @@ import java.util.Optional;
 @RestController
 @Transactional
 @RequestMapping("/quiz")
-public class QuizController {
+public class TestController {
 
     @Autowired
     private QuestionRepo questionRepo;
-
-    @Autowired 
-    private QuizServices quizServices;
 
     @PostMapping("/v1.0/getQuestion")
     public ResponseEntity<ResponseDTO> getQuestions(@RequestBody Questions request) {
@@ -51,7 +47,7 @@ public class QuizController {
         Timestamp landingTime = Timestamp.valueOf(LocalDateTime.now());
         List<Questions> allQuestions = questionRepo.findAll();
         return ResponseUtil.sendResponse(allQuestions , landingTime, HttpStatus.OK, 200, Constants.SUCCESS , endPoint);
-    }   
     }
+
     
 }
