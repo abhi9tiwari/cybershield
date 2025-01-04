@@ -4,10 +4,8 @@ import com.fasterxml.jackson.annotation.JsonAlias;
 import lombok.Data;
 
 @Data
-public class AnswerDTO {
+public class OptionDTO {
 
-    @JsonAlias("answer_id")
-    private Integer answerId;
-
-    private Integer answer;
+    private Integer optionId;
+    private String option;
 }
