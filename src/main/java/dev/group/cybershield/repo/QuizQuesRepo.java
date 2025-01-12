@@ -1,8 +1,6 @@
-package dev.group.cybershield.quiz.repo;
+package dev.group.cybershield.repo;
 
 import dev.group.cybershield.entity.Questions;
-import dev.group.cybershield.quiz.model.QuestionDTO;
-import lombok.Data;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -15,4 +13,6 @@ public interface QuizQuesRepo extends JpaRepository<Questions,Integer> {
     String randomQuestionQuery =" select * from Question_Master order by RANDOM() limit 10 ";
     @Query(value=randomQuestionQuery,nativeQuery = true)
     Optional<List<Questions>> getRandomQuestions();
+
+    Optional<Questions> findById(Integer questionId);
 }

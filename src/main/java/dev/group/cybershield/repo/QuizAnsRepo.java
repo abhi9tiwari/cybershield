@@ -1,4 +1,4 @@
-package dev.group.cybershield.quiz.repo;
+package dev.group.cybershield.repo;
 
 import dev.group.cybershield.entity.Answers;
 import org.springframework.data.jpa.repository.JpaRepository;

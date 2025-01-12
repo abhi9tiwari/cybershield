@@ -5,4 +5,5 @@ import lombok.Data;
 @Data
 public class QuizReq {
     public Integer userId;
+    public Integer testId;
 }
