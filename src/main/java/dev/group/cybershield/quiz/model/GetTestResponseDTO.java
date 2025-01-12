@@ -6,7 +6,7 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class TestResponseDTO {
+public class GetTestResponseDTO {
     private Integer testId;
     private List<QuestionDTO> questionList;
 }

@@ -14,4 +14,8 @@ public interface QuizAnsRepo extends JpaRepository<Answers,Integer> {
     String answerByQuestionId ="select * from answer_master where question_id=:question_id";
     @Query(value=answerByQuestionId,nativeQuery = true)
     List<Answers> getAnswerByQuestionId(@Param("question_id") Integer id);
+
+    String findCorrectAnswer="select answer_id from answer_master where question_id = :questionId and is_correct = 'Y' ";
+    @Query(value= findCorrectAnswer,nativeQuery = true)
+    Integer findCorrectAnswer(@Param("questionId") Integer questionId);
 }

@@ -33,13 +33,12 @@ public class QuizServiceImp implements  QuizService {
     @Autowired
     private TestQuestionMasterRepo testQuestionMasterRepo;
 
-//getTest API:
+//getTest Services:
     @Override
-    public TestResponseDTO findUnattemptedTestByTestId(Integer testId)
-    {
+    public GetTestResponseDTO findUnattemptedTestByTestId(Integer testId) throws Exception {
         try{
-            log.info("findUnattemptedTestByTestId_API testId: {}", testId);
-            TestResponseDTO testData= new TestResponseDTO();
+            log.info("findUnattemptedTestByTestId_Service testId: {}", testId);
+            GetTestResponseDTO testData= new GetTestResponseDTO();
             List<QuestionDTO> questionDTOList =new ArrayList<QuestionDTO>();
             testData.setTestId(testId);
             List<TestQuestionMap> testQuestionMapList = testQuestionMasterRepo.findByTestId(testId);
@@ -78,18 +77,18 @@ public class QuizServiceImp implements  QuizService {
             testData.setQuestionList(questionDTOList);
             return testData;
         } catch (Exception e) {
-            log.error("findUnattemptedTestByTestId_API_error: {}",e.getMessage());
-            throw new RuntimeException(e);
+            log.error("findUnattemptedTestByTestId_Service_error: {}",e.getMessage());
+            throw new Exception(e);
         }
 
     }
 
 
     @Override
-    public TestResponseDTO fetchNewQuestionData(Integer userId){
+    public GetTestResponseDTO fetchNewQuestionData(Integer userId) throws Exception {
         try {
-            log.info("fetchNewQuestionData_API userId:{}",userId);
-            TestResponseDTO testData = new TestResponseDTO();
+            log.info("fetchNewQuestionData_Service userId:{}",userId);
+            GetTestResponseDTO testData = new GetTestResponseDTO();
             Optional<List<Questions>> questionListObj = quizQuesRepo.getRandomQuestions();
             Integer testId = null;
 
@@ -103,7 +102,7 @@ public class QuizServiceImp implements  QuizService {
                 testMasterData.setStatus("A");
                 testId = testMasterRepo.save(testMasterData).getTestId();
                 testData.setTestId(testId);
-                log.info("fetchNewQuestionData_API userId:{} and testId:{} ",userId,testId);
+                log.info("fetchNewQuestionData_Service userId:{} and testId:{} ",userId,testId);
 
                 List<Questions> questionList = questionListObj.get();
                 List<QuestionDTO> questionDTOList = new ArrayList<QuestionDTO>();
@@ -157,16 +156,16 @@ public class QuizServiceImp implements  QuizService {
             }
             return testData;
         } catch (Exception e) {
-            log.error("fetchNewQuestionData_API_error: {}",e.getMessage());
-            throw new RuntimeException(e);
+            log.error("fetchNewQuestionData_Service_error: {}",e.getMessage());
+            throw new Exception(e);
         }
     }
 
     @Override
-    public TestResponseDTO getTestData(QuizReq reqBody) {
+    public GetTestResponseDTO getTestData(QuizReq reqBody) throws Exception {
         try{
-            log.info("getTestData_API userId:{}",reqBody.userId);
-            TestResponseDTO testData = new TestResponseDTO();
+            log.info("getTestData_Service userId:{}",reqBody.userId);
+            GetTestResponseDTO testData = new GetTestResponseDTO();
             Integer unattemptedTestId=testMasterRepo.findUnattemptedTest(reqBody.userId);
             if(unattemptedTestId!=null){
                 testData= findUnattemptedTestByTestId(unattemptedTestId);
@@ -176,11 +175,41 @@ public class QuizServiceImp implements  QuizService {
             }
             return testData;
         } catch (Exception e) {
-            log.error("getTestData_API_error: {}",e.getMessage());
-            throw new RuntimeException(e);
+            log.error("getTestData_Service_error: {}",e.getMessage());
+            throw new Exception(e);
         }
 
     }
 
-    // viewTest API
+    // submitTest Services:
+    @Override
+    public SubmitTestRes getScore(SubmitTestReq reqBody) throws Exception {
+        try{
+            log.info("getScore_Service-reqBody: {}",reqBody);
+            int score =0;
+            SubmitTestRes submitTest = new SubmitTestRes();
+            for(QuestionAnswer queAns: reqBody.getQuestionAnswerList()){
+                testQuestionMasterRepo.setUserAnswerIdByTestIdAndQuestionId(queAns.getSelectedOptionId(),reqBody.getTestId(),queAns.getQuestionId(),LocalDateTime.now());
+                Integer correctAns =quizAnsRepo.findCorrectAnswer(queAns.getQuestionId());
+                if(correctAns!=null && correctAns.equals(queAns.getSelectedOptionId())){
+                    score+=10;
+                }
+            }
+            submitTest.setScore(score);
+            if(score>=80){
+                submitTest.setGrade("Pass");
+            }
+            else{
+                submitTest.setGrade("Fail");
+            }
+
+            testMasterRepo.saveScoreCompleteTest(score,LocalDateTime.now(),reqBody.getTestId());
+
+            return submitTest;
+        } catch (Exception e) {
+            log.error("getScore_Service_Error: {}",e.getMessage());
+            throw new Exception(e);
+        }
+    }
+
 }

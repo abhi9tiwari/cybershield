@@ -1,22 +1,20 @@
 package dev.group.cybershield.quiz.service;
 
-import dev.group.cybershield.entity.Answers;
-import dev.group.cybershield.entity.Questions;
-import dev.group.cybershield.quiz.model.OptionDTO;
-import dev.group.cybershield.quiz.model.QuestionDTO;
 import dev.group.cybershield.quiz.model.QuizReq;
-import dev.group.cybershield.quiz.model.TestResponseDTO;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import dev.group.cybershield.quiz.model.GetTestResponseDTO;
+import dev.group.cybershield.quiz.model.SubmitTestReq;
+import dev.group.cybershield.quiz.model.SubmitTestRes;
 
 public interface QuizService {
 
-    public TestResponseDTO findUnattemptedTestByTestId(Integer userId);
+    //getTest Services:
+    public GetTestResponseDTO findUnattemptedTestByTestId(Integer userId) throws Exception;
 
-    public TestResponseDTO fetchNewQuestionData(Integer userId);
+    public GetTestResponseDTO fetchNewQuestionData(Integer userId) throws Exception;
 
-    public TestResponseDTO getTestData(QuizReq reqBody);
+    public GetTestResponseDTO getTestData(QuizReq reqBody) throws Exception;
+
+    //submit Test Services:
+    public SubmitTestRes getScore(SubmitTestReq reqBody) throws Exception;
 
 }
