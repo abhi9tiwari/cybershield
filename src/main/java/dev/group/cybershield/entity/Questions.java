@@ -1,5 +1,6 @@
 package dev.group.cybershield.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -7,7 +8,7 @@ import java.time.LocalDateTime;
 
 @Data
 @Entity
-@Table(name = "QUESTION_MASTER")
+@Table(name = "question_master")
 public class Questions {
 
     @Id
