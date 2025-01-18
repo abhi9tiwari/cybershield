@@ -22,7 +22,7 @@ import java.util.Optional;
 @Slf4j
 @RestController
 @Transactional
-@RequestMapping("/quiz")
+@RequestMapping("/test")
 public class TestController {
 
     @Autowired

@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.sql.Timestamp;
@@ -20,6 +21,7 @@ import java.time.LocalDateTime;
 
 @Slf4j
 @RestController
+@RequestMapping("/quiz")
 public class QuizController {
 
     @Autowired
@@ -30,6 +32,15 @@ public class QuizController {
         try{
             String endPoint = "getTest";
             Timestamp landingTime = Timestamp.valueOf(LocalDateTime.now());
+
+            if(reqBody.getUserId() == null ) {
+                throw new Exception("UserId are mandatory");
+            }
+
+            if(reqBody.getTestId() == null ) {
+                throw new Exception("TestId are mandatory");
+            }
+
             GetTestResponseDTO response = quizService.getTestData(reqBody);
             log.info("gtTest_API " + response);
             return ResponseUtil.sendResponse(response, landingTime, HttpStatus.OK, 200, "Successfully" , endPoint);
