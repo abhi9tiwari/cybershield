@@ -1,6 +1,5 @@
-# Use an official Maven image to build the spring boot app
+# Use an official Maven image to build the Spring Boot application
 FROM maven:latest AS build
-
 
 # Set the working directory
 WORKDIR /app
